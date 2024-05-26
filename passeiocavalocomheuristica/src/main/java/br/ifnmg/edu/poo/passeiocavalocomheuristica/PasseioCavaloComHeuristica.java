@@ -84,6 +84,8 @@ public class PasseioCavaloComHeuristica {
     }
 
     private static void imprimeTabuleiro(int[][] tabuleiro) {
+        System.out.println("> Tabuleiro: ");
+        System.out.println();
         for (int[] linha : tabuleiro) {
             for (int elemento : linha) {
                 System.out.printf("%2d ", elemento);
@@ -102,6 +104,9 @@ public class PasseioCavaloComHeuristica {
 
         System.out.println();
         System.out.println(">> O cavalo realizou " + qtddMovimentos + " movimentos.");
+        System.out.println();
+        System.out.println("*Obs.:\t. casas visitadas = {0}");
+        System.out.println("\t. acessibilidade final = {1, 2, 3, 4, 5, 6, 7, 8}");
 
     }
 
