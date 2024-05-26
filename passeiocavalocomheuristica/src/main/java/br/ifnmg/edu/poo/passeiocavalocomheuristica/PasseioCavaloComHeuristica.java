@@ -24,13 +24,13 @@ public class PasseioCavaloComHeuristica {
 
         int[] horizontal = {2, 1, -1, -2, -2, -1, 1, 2};
         int[] vertical = {-1, -2, -2, -1, 1, 2, 2, 1};
-        int[] acessibilidade = {2, 3, 4, 6, 8};
+        int[] acessibilidade = {1, 2, 3, 4, 5, 6, 7, 8};
 
         boolean quadradoValido = true; // booleano p/ impedir laço while infinito
 
-        int contador = 1;
+        int contador = 0;
 
-        tabuleiro[linhaAtual][colunaAtual] = 1;
+        tabuleiro[linhaAtual][colunaAtual] = 0;
 
         while (contador <= 64 && quadradoValido) {
             int proxLinha;
@@ -41,24 +41,46 @@ public class PasseioCavaloComHeuristica {
                 proxLinha = linhaAtual + vertical[moveNumber];
                 proxColuna = colunaAtual + horizontal[moveNumber];
 
-                if (proxLinha >= 0 && proxLinha < 8 && proxColuna >= 0 && proxColuna < 8 && tabuleiro[proxLinha][proxColuna] == 0) {
-                    
+                if (proxLinha >= 0 && proxLinha < 8 && proxColuna >= 0 && proxColuna < 8 && tabuleiro[proxLinha][proxColuna] != 0) {
+
                     // passa por todos os pesos, priorizando os menores (+ inacessíveis)
-                    for (int acesso = 0; acesso < 5; acesso++) {
-                        
+                    for (int acesso = 0; acesso < 8; acesso++) {
+                        if (acessibilidade[acesso] == tabuleiro[proxLinha][proxColuna]) {
+                            linhaAtual = proxLinha;
+                            colunaAtual = proxColuna;
+                            contador++;
+                            tabuleiro[linhaAtual][colunaAtual] = 0;
+                            quadradoValido = true;
+                            atualizaAcessibilidade(linhaAtual, colunaAtual, tabuleiro);
+                            break; // volta pro while(), p/ avançar a próx. posição
+                        }
                     }
-                    
-                    linhaAtual = proxLinha;
-                    colunaAtual = proxColuna;
-                    contador++;
-                    tabuleiro[linhaAtual][colunaAtual] = contador;
-                    quadradoValido = true;
-                    break; // volta pro while(), p/ avançar a próx. posição
+
                 }
             }
         }
 
         return contador;
+    }
+
+    private static void atualizaAcessibilidade(int linhaAtual, int colunaAtual, int[][] tabuleiro) {
+
+        int[] horizontal = {2, 1, -1, -2, -2, -1, 1, 2};
+        int[] vertical = {-1, -2, -2, -1, 1, 2, 2, 1};
+        int proxLinha;
+        int proxColuna;
+
+        for (int moveNumber = 0; moveNumber < 8; moveNumber++) {
+            proxLinha = linhaAtual + vertical[moveNumber];
+            proxColuna = colunaAtual + horizontal[moveNumber];
+
+            if (proxLinha >= 0 && proxLinha < 8 && proxColuna >= 0 && proxColuna < 8 && tabuleiro[proxLinha][proxColuna] != 0) {
+                linhaAtual = proxLinha;
+                colunaAtual = proxColuna;
+                tabuleiro[linhaAtual][colunaAtual]--;
+                break; // retorna pro laço for() p/ testar um novo movimento
+            }
+        }
     }
 
     private static void imprimeTabuleiro(int[][] tabuleiro) {
