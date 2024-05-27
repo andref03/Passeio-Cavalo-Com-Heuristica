@@ -108,7 +108,7 @@ public class PasseioCavaloComHeuristica {
         System.out.println();
         for (int[] linha : tabuleiro) {
             for (int elemento : linha) {
-                System.out.printf("%2d ", elemento);
+                System.out.printf("(%2d) ", elemento);
             }
             System.out.println();
         }
